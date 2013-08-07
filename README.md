@@ -1,0 +1,1 @@
+Private Whispeer Helper Library.
