@@ -10,6 +10,11 @@ var helper = {
 	deepGet: function (obj, key) {
 		var i;
 		var cur = obj;
+
+		if (typeof key === "string") {
+			key = [key];
+		}
+
 		for (i = 0; i < key.length; i += 1) {
 			if (cur[key[i]]) {
 				cur = cur[key[i]];
