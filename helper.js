@@ -354,9 +354,6 @@ var helper = {
 // Hook into commonJS module systems
 if (typeof module !== "undefined" && module.hasOwnProperty("exports")) {
 	module.exports = helper;
-}
-
-if (typeof require === "function") {
 	step = require("step");
 }
 
