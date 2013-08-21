@@ -7,6 +7,19 @@ var helper = {
 	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
 	log: true,
 
+	setAll: function (obj, value) {
+		var attr;
+		for (attr in obj) {
+			if (obj.hasOwnProperty(attr)) {
+				if (typeof obj[attr] === "object") {
+					helper.setAll(obj, value);
+				} else {
+					obj[attr] = value;
+				}
+			}
+		}
+	},
+
 	deepGet: function (obj, key) {
 		var i;
 		var cur = obj;
