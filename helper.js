@@ -7,18 +7,50 @@ var helper = {
 	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
 	log: true,
 
+	setAll: function (obj, value) {
+		var attr;
+		for (attr in obj) {
+			if (obj.hasOwnProperty(attr)) {
+				if (typeof obj[attr] === "object") {
+					helper.setAll(obj, value);
+				} else {
+					obj[attr] = value;
+				}
+			}
+		}
+	},
+
 	deepGet: function (obj, key) {
 		var i;
 		var cur = obj;
+
+		if (typeof key === "string") {
+			key = [key];
+		}
+
+		if (!cur) {
+			return;
+		}
+
 		for (i = 0; i < key.length; i += 1) {
 			if (cur[key[i]]) {
 				cur = cur[key[i]];
 			} else {
-				return false;
+				return;
 			}
 		}
 
 		return cur;
+	},
+
+	deepSet: function (obj, key, value) {
+		var toSet = key.pop();
+		var branch = helper.deepGet(obj, key);
+		if (branch) {
+			branch[toSet] = value;
+		} else {
+			return false;
+		}
 	},
 
 	validateObjects: function validateObjectsF(reference, data, noValueCheck) {
@@ -46,20 +78,6 @@ var helper = {
 		}
 
 		return true;
-	},
-
-	deepSet: function (obj, key, val) {
-		var i;
-		var cur = obj;
-		for (i = 0; i < key.length - 1; i += 1) {
-			if (!cur[key[i]]) {
-				cur[key[i]] = {};
-			}
-
-			cur = cur[key[i]];
-		}
-
-		cur[key[key.length - 1]] = val;
 	},
 
 	/** chars for a sid */
@@ -352,9 +370,6 @@ var helper = {
 // Hook into commonJS module systems
 if (typeof module !== "undefined" && module.hasOwnProperty("exports")) {
 	module.exports = helper;
-}
-
-if (typeof require === "function") {
 	step = require("step");
 }
 
