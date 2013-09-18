@@ -271,7 +271,8 @@ var helper = {
 				if (helper.log || false) {
 					console.log(err.stack);
 				}
-				throw err;
+				this(err);
+				return;
 			}
 
 			var args = []; // empty array
@@ -316,11 +317,13 @@ var helper = {
 					}
 
 					if (doThrow) {
-						throw err;
+						this(err);
+						return;
 					}
 				} else {
 					if (throwCertainError(err, errors)) {
-						throw err;
+						this(err);
+						return;
 					}
 				}
 			}
