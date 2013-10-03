@@ -279,6 +279,17 @@ var helper = {
 		return true;
 	},
 
+	nT: function (cb) {
+		var nT = function nTf() {
+			var args = arguments;
+			process.nextTick(function () {
+				cb.apply(this, args);
+			});
+		};
+
+		return nT;
+	},
+
 	/** step function
 	* throws given errors
 	* passes on all other stuff to given function
