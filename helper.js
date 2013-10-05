@@ -7,6 +7,27 @@ var helper = {
 	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
 	log: true,
 
+	callEach: function (listener, args) {
+		var i;
+		for (i = 0; i < listener.length; i += 1) {
+			try {
+				listener.apply(null, args);
+			} catch (e) {
+				console.log(e);
+			}
+		}
+	},
+
+	objectMap: function (obj, func) {
+		var attr, res = {};
+		for (attr in obj) {
+			if (obj.hasOwnProperty(attr)) {
+				res[attr] = func(obj[attr]);
+			}
+		}
+		return res;
+	},
+
 	setAll: function (obj, value) {
 		var attr;
 		for (attr in obj) {
@@ -282,9 +303,13 @@ var helper = {
 	nT: function (cb) {
 		var nT = function nTf() {
 			var args = arguments;
-			process.nextTick(function () {
+			if (typeof process !== "undefined") {
+				process.nextTick(function () {
+					cb.apply(this, args);
+				});
+			} else {
 				cb.apply(this, args);
-			});
+			}
 		};
 
 		return nT;
