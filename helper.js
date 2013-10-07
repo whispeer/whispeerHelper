@@ -7,6 +7,15 @@ var helper = {
 	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
 	log: true,
 
+	arrayToObject: function (arr, func) {
+		var i, res = {};
+		for (i = 0; i < arr.length; i += 1) {
+			res[func(arr[i], i)] = arr[i];
+		}
+
+		return res;
+	},
+
 	callEach: function (listener, args) {
 		var i;
 		for (i = 0; i < listener.length; i += 1) {
