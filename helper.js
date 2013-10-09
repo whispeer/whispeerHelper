@@ -16,6 +16,16 @@ var helper = {
 		return res;
 	},
 
+	removeArray: function (arr, val) {
+		var ax;
+
+		while ((ax = this.indexOf(val)) !== -1) {
+			this.splice(ax, 1);
+		}
+
+		return arr;
+	},
+
 	callEach: function (listener, args) {
 		var i;
 		for (i = 0; i < listener.length; i += 1) {
