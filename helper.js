@@ -20,7 +20,7 @@ var helper = {
 		var ax;
 
 		while ((ax = arr.indexOf(val)) !== -1) {
-			this.splice(ax, 1);
+			arr.splice(ax, 1);
 		}
 
 		return arr;
