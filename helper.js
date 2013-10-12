@@ -19,7 +19,7 @@ var helper = {
 	removeArray: function (arr, val) {
 		var ax;
 
-		while ((ax = this.indexOf(val)) !== -1) {
+		while ((ax = arr.indexOf(val)) !== -1) {
 			this.splice(ax, 1);
 		}
 
