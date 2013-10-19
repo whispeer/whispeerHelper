@@ -7,6 +7,17 @@ var helper = {
 	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
 	log: true,
 
+	containsOr: function (value) {
+		var i;
+		for (i = 1; i < arguments.length; i += 1) {
+			if (arguments[i].indexOf(value) > -1) {
+				return true;
+			}
+		}
+
+		return false;
+	},
+
 	arrayToObject: function (arr, func) {
 		var i, res = {};
 		for (i = 0; i < arr.length; i += 1) {
