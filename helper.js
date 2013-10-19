@@ -28,6 +28,10 @@ var helper = {
 	},
 
 	removeArray: function (arr, val) {
+		if (!arr) {
+			return [];
+		}
+
 		var ax;
 
 		while ((ax = arr.indexOf(val)) !== -1) {
@@ -41,7 +45,7 @@ var helper = {
 		var i;
 		for (i = 0; i < listener.length; i += 1) {
 			try {
-				listener.apply(null, args);
+				listener[i].apply(null, args);
 			} catch (e) {
 				console.log(e);
 			}
