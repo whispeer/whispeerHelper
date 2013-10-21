@@ -7,6 +7,17 @@ var helper = {
 	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
 	log: true,
 
+	copyObj: function (obj) {
+		var newObj = {}, attr;
+		for (attr in obj) {
+			if (obj.hasOwnProperty(attr)) {
+				newObj[attr] = obj[attr];
+			}
+		}
+
+		return newObj;
+	},
+
 	containsOr: function (value) {
 		var i;
 		for (i = 1; i < arguments.length; i += 1) {
