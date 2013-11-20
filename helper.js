@@ -66,15 +66,28 @@ var helper = {
 		return arr;
 	},
 
-	callEach: function (listener, args) {
+	callEach: function (listener, args, returnFunction) {
+		if (typeof returnFunction !== "function") {
+			returnFunction = function () {};
+		}
+
+		var result, currentResult;
+
 		var i;
 		for (i = 0; i < listener.length; i += 1) {
 			try {
-				listener[i].apply(null, args);
+				currentResult = listener[i].apply(null, args);
+				if (result) {
+					result = returnFunction(result, currentResult);
+				} else {
+					result = currentResult;
+				}
 			} catch (e) {
 				console.log(e);
 			}
 		}
+
+		return result;
 	},
 
 	objectMap: function (obj, func) {
