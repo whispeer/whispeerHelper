@@ -7,6 +7,20 @@ var helper = {
 	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
 	log: true,
 
+	assert: function (bool) {
+		if (!bool) {
+			throw "assertion not met!";
+		}
+	},
+
+	qm: function (attr) {
+		return function (obj) {
+			return obj[attr];
+		};
+	},
+
+	nop: function () {},
+
 	copyObj: function (obj) {
 		var newObj = {}, attr;
 		for (attr in obj) {
