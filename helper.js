@@ -7,6 +7,10 @@ var helper = {
 	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
 	log: true,
 
+	parseDecimal: function (e) {
+		return parseInt(e, 10);
+	},
+
 	assert: function (bool) {
 		if (!bool) {
 			throw "assertion not met!";
