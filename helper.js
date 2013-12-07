@@ -7,6 +7,33 @@ var helper = {
 	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
 	log: true,
 
+	extend: function (target, extender, depth) {
+		if (!target) {
+			return extender;
+		}
+
+		if (depth < 0) {
+			throw "too deep";
+		}
+
+		var attr, given, added;
+		// Extend the base object
+		for (attr in extender) {
+			given = target[attr];
+			added = extender[attr];
+
+			if (added !== undefined) {
+				if (typeof given === "object" && typeof added === "object") {
+					helper.extend(given, added, depth-1);
+				} else {
+					target[attr] = added;
+				}
+			}
+		}
+
+		return target;
+	},
+
 	parseDecimal: function (e) {
 		return parseInt(e, 10);
 	},
@@ -148,6 +175,24 @@ var helper = {
 		} else {
 			return false;
 		}
+	},
+
+	deepSetCreate: function (obj, key, value) {
+		var i, cur = obj;
+		for (i = 0; i < key.length - 1; i += 1) {
+			if (!cur[key[i]]) {
+				cur[key[i]] = {};
+			}
+
+			cur = cur[key[i]];
+		}
+
+		if (cur[key[key.length - 1]] !== value) {
+			cur[key[key.length - 1]] = value;
+			return true;
+		}
+
+		return false;
 	},
 
 	validateObjects: function validateObjectsF(reference, data, noValueCheck) {
