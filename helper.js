@@ -7,6 +7,22 @@ var helper = {
 	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
 	log: true,
 
+	arrayUnique: function (arr) {
+		var hashMap = {}, i, name, l = arr.length, result = [];
+
+		for(i=0; i<l; i+=1) {
+			if (arr[i]) {
+				hashMap[arr[i]] = arr[i];
+			}
+		}
+
+		for(name in hashMap) {
+			result.push(hashMap[name]);
+		}
+
+		return result;
+	},
+
 	extend: function (target, extender, depth) {
 		if (!target) {
 			return extender;
