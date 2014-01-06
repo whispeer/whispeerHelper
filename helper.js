@@ -1,7 +1,5 @@
 "use strict";
 
-var step;
-
 /** contains general helper functions */
 var helper = {
 	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
@@ -240,40 +238,6 @@ var helper = {
 
 	/** chars for a sid */
 	codeChars: ["Q", "W", "E", "R", "T", "Z", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Y", "X", "C", "V", "B", "N", "M", "q", "w", "e", "r", "t", "z", "u", "i", "o", "p", "a", "s", "d", "f", "g", "h", "j", "k", "l", "y", "x", "c", "v", "b", "n", "m", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
-	/** get a random sid of given length 
-	* @param length length of sid
-	* @param callback callback
-	* @callback (error, sid)
-	*/
-	code: function (length, callback) {
-		var random = require("secure_random");
-
-		step(function generateRandom() {
-			if (length <= 0) {
-				throw new Error("length not long enough");
-			}
-
-			var i = 0;
-			for (i = 0; i < length; i += 1) {
-				random.getRandomInt(0, helper.codeChars.length - 1, this.parallel());
-			}
-
-			return;
-		}, function (err, numbers) {
-			if (err) {
-				callback(err);
-				return;
-			}
-
-			var result = "", i = 0;
-
-			for (i = 0; i < numbers.length; i += 1) {
-				result = result + helper.codeChars[numbers[i]];
-			}
-
-			callback(null, result);
-		});
-	},
 
 	/** get a file names extension */
 	getExtension: function (filename) {
@@ -543,13 +507,10 @@ var helper = {
 // Hook into commonJS module systems
 if (typeof module !== "undefined" && module.hasOwnProperty("exports")) {
 	module.exports = helper;
-	step = require("step");
 }
 
 if (typeof define !== "undefined") {
-	define(["step"], function (s) {
-		step = s;
-
+	define([], function () {
 		return helper;
 	});
 }
