@@ -5,6 +5,17 @@ var helper = {
 	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
 	log: true,
 
+	arraySubtract: function (original, subtractor) {
+		var i, result = [];
+		for (i = 0; i < original.length; i += 1) {
+			if (subtractor.indexOf(original[i]) === -1) {
+				result.push(original[i]);
+			}
+		}
+
+		return result;
+	},
+
 	arrayUnique: function (arr) {
 		var hashMap = {}, i, name, l = arr.length, result = [];
 
