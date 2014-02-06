@@ -21,6 +21,39 @@ var helper = {
 		return result;
 	},
 
+	deepCopyArray: function (arr, depth) {
+		var result = [], i;
+		for (i = 0; i < arr.length; i += 1) {
+			result[i] = helper.deepCopyObj(arr[i], depth-1);
+		}
+
+		return result;
+	},
+
+	deepCopyObj: function (obj, depth) {
+		if (typeof obj !== "object") {
+			return obj;
+		}
+
+		if (depth < 0) {
+			throw "too deep";
+		}
+
+		if (obj instanceof Array) {
+			return helper.deepCopyArray(obj, depth);
+		}
+
+		var attr, value, result = {};
+		// Extend the base object
+		for (attr in obj) {
+			value = obj[attr];
+
+			result[attr] = helper.deepCopyObj(value, depth-1);
+		}
+
+		return result;
+	},
+
 	extend: function (target, extender, depth) {
 		if (!target) {
 			return extender;
@@ -423,7 +456,7 @@ var helper = {
 	sF: function (cb) {
 		var mysf = function sfFunction(err) {
 			if (err) {
-				if (helper.log || false) {
+				if (helper.log) {
 					console.log(err.stack);
 				}
 				this(err);
