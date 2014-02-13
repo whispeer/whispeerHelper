@@ -400,7 +400,7 @@ var helper = {
 	},
 
 	isHex: function (data) {
-		return (helper.isset(data) && !!data.match(/^[A-Fa-f0-9]*$/));
+		return (helper.isset(data) && typeof data === "string" && !!data.match(/^[A-Fa-f0-9]*$/));
 	},
 
 	/** typeof val == object? */
