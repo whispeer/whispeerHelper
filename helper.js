@@ -53,7 +53,7 @@ var helper = {
 		}
 
 		if (depth < 0) {
-			throw "too deep";
+			throw new Error("too deep");
 		}
 
 		if (obj instanceof Array) {
@@ -77,7 +77,7 @@ var helper = {
 		}
 
 		if (depth < 0) {
-			throw "too deep";
+			throw new Error("too deep");
 		}
 
 		var attr, given, added;
@@ -104,7 +104,7 @@ var helper = {
 
 	assert: function (bool) {
 		if (!bool) {
-			throw "assertion not met!";
+			throw new Error("assertion not met!");
 		}
 	},
 
