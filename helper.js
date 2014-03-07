@@ -10,16 +10,18 @@ var helper = {
 		for (attr in obj) {
 			if (obj.hasOwnProperty(attr)) {
 				if (attributes.indexOf(attr) > -1) {
-					result[attr[i]] = JSON.stringify(obj[attr]);
+					result[attr] = JSON.stringify(obj[attr]);
 				} else {
 					if (typeof obj[attr] === "object") {
 						throw new Error("value should not be stringified but is object");
 					}
 
-					result[attr[i]] = obj[attr];
+					result[attr] = obj[attr];
 				}
 			}
 		}
+
+		return result;
 	},
 
 	unStringifyCertainAttributes: function (obj, attributes) {
@@ -27,12 +29,14 @@ var helper = {
 		for (attr in obj) {
 			if (obj.hasOwnProperty(attr)) {
 				if (attributes.indexOf(attr) > -1) {
-					result[attr[i]] = JSON.parse(obj[attr]);
+					result[attr] = JSON.parse(obj[attr]);
 				} else {
-					result[attr[i]] = obj[attr];
+					result[attr] = obj[attr];
 				}
 			}
 		}
+
+		return result;
 	},
 
 	newElement: function (Constructor) {
