@@ -5,6 +5,36 @@ var helper = {
 	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
 	log: true,
 
+	stringifyCertainAttributes: function (obj, attributes) {
+		var attr, result = {};
+		for (attr in obj) {
+			if (obj.hasOwnProperty(attr)) {
+				if (attributes.indexOf(attr) > -1) {
+					result[attr[i]] = JSON.stringify(obj[attr]);
+				} else {
+					if (typeof obj[attr] === "object") {
+						throw new Error("value should not be stringified but is object");
+					}
+
+					result[attr[i]] = obj[attr];
+				}
+			}
+		}
+	},
+
+	unStringifyCertainAttributes: function (obj, attributes) {
+		var attr, result = {};
+		for (attr in obj) {
+			if (obj.hasOwnProperty(attr)) {
+				if (attributes.indexOf(attr) > -1) {
+					result[attr[i]] = JSON.parse(obj[attr]);
+				} else {
+					result[attr[i]] = obj[attr];
+				}
+			}
+		}
+	},
+
 	newElement: function (Constructor) {
 		return function (e) {
 			return new Constructor(e);
