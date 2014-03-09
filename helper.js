@@ -121,7 +121,7 @@ var helper = {
 			added = extender[attr];
 
 			if (added !== undefined) {
-				if (typeof given === "object" && typeof added === "object") {
+				if (typeof given === "object" && typeof added === "object" && !(added instanceof Array)) {
 					helper.extend(given, added, depth-1);
 				} else {
 					target[attr] = added;
