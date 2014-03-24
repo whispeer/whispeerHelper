@@ -179,6 +179,24 @@ var helper = {
 
 	nop: function () {},
 
+	objectJoin: function (obj1, obj2) {
+		var result = {};
+
+		helper.objectEach(obj1, function (key, value) {
+			if (obj2.hasOwnProperty(key) && value !== obj2[key]) {
+				if (typeof value === "object" && typeof obj2[key] === "object") {
+					result[key] = helper.objectJoin(value, obj2[key]);
+				} else {
+					throw new Error("attribute set in both!");
+				}
+			} else {
+				result[key] = value;
+			}
+		});
+
+		return result;
+	},
+
 	objectEach: function (obj, cb) {
 		var attr;
 		for (attr in obj) {
