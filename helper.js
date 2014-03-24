@@ -72,6 +72,35 @@ var helper = {
 		return result;
 	},
 
+	arrayEqual: function (arr1, arr2) {
+		return arr1.length === arr2.length && helper.arraySubtract(arr1, arr2).length === 0 && helper.arraySubtract(arr2, arr1).length === 0;
+	},
+
+	deepEqual: function (obj1, obj2) {
+		if (obj1 === obj2) {
+			return true;
+		} else if (typeof obj1 === "object" && typeof obj2 === "object") {
+			var keys1 = Object.keys(obj1), keys2 = Object.keys(obj2);
+
+			if (!helper.arrayEqual(keys1, keys2)) {
+				return false;
+			}
+
+			var i, cur;
+			for (i = 0; i < keys1.length; i += 1) {
+				cur = keys1[i];
+
+				if (!helper.deepEqual(obj1[cur], obj2[cur])) {
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
+
+		return true;
+	},
+
 	deepCopyArray: function (arr, depth) {
 		var result = [], i;
 		for (i = 0; i < arr.length; i += 1) {
@@ -149,6 +178,15 @@ var helper = {
 	},
 
 	nop: function () {},
+
+	objectEach: function (obj, cb) {
+		var attr;
+		for (attr in obj) {
+			if (obj.hasOwnProperty(attr)) {
+				cb(attr, obj[attr]);
+			}
+		}
+	},
 
 	copyObj: function (obj) {
 		var newObj = {}, attr;
