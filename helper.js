@@ -194,6 +194,12 @@ var helper = {
 			}
 		});
 
+		helper.objectEach(obj2, function (key, value) {
+			if (!obj1.hasOwnProperty(key)) {
+				result[key] = value;
+			}
+		});
+
 		return result;
 	},
 
