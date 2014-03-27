@@ -5,6 +5,25 @@ var helper = {
 	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
 	log: true,
 
+	setGeneralState: function (state, obj) {
+		obj.saving = false;
+		obj.success = false;
+		obj.failure = false;
+
+		switch(state) {
+			case "saving":
+				obj.saving = true;
+				break;
+			case "success":
+				obj.success = true;
+				break;
+			case "failure":
+			default:
+				obj.failure = true;
+				break;
+		}			
+	},
+
 	stringifyCertainAttributes: function (obj, attributes) {
 		var attr, result = {};
 		for (attr in obj) {
