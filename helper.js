@@ -5,6 +5,60 @@ var helper = {
 	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
 	log: true,
 
+	/** calls all listeners */
+	callListener: function(listener, arg1) {
+		var i;
+		for (i = 0; i < listener.length; i += 1) {
+			try {
+				listener[i](null,arg1);
+			} catch (e) {
+				console.log(e);
+			}
+		}
+	},
+
+	delayMultiple: function (delayTime, loadFunction) {
+		var timerStarted = false;
+		var idsToLoad = [];
+		var loadListeners = {};
+
+		function doLoad() {
+			var identifier = idsToLoad;
+			idsToLoad = [];
+			timerStarted = false;
+
+			loadFunction(identifier, function (err, results) {
+				if (err) {
+					throw err;
+				}
+
+				var i, curIdentifier, curListener;
+				for (i = 0; i < results.length; i += 1) {
+					curIdentifier = identifier[i];
+					curListener = loadListeners[curIdentifier];
+
+					helper.callListener(curListener, results[i]);
+					delete loadListeners[curIdentifier];
+				}
+			});
+		}
+
+		return function (identifier, cb) {
+			if (loadListeners[identifier]) {
+				loadListeners[identifier].push(cb);
+			} else {
+				loadListeners[identifier] = [cb];
+				idsToLoad.push(identifier);
+
+				if (!timerStarted) {
+					timerStarted = true;
+
+					window.setTimeout(doLoad, delayTime);
+				}
+			}
+		};
+	},
+
 	setGeneralState: function (state, obj) {
 		obj.saving = false;
 		obj.success = false;
