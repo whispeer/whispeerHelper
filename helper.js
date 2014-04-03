@@ -5,6 +5,21 @@ var helper = {
 	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
 	log: true,
 
+	array: {
+		flatten: function (arr) {
+			var i, result = [];
+			for (i = 0; i < arr.length; i += 1) {
+				if (arr[i] instanceof Array) {
+					result.concat(helper.flatten(arr[i]));
+				} else {
+					result.psuh(arr[i]);
+				}
+			}
+
+			return result;
+		}
+	},
+
 	dataURItoBlob: function (dataURI) {
 		if (atob && Blob && ArrayBuffer && Uint8Array) {
 			// convert base64 to raw binary data held in a string
