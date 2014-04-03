@@ -6,13 +6,16 @@ var helper = {
 	log: true,
 
 	array: {
+		contains: function (arr, element) {
+			return arr.indexOf(element) > -1;
+		},
 		flatten: function (arr) {
 			var i, result = [];
 			for (i = 0; i < arr.length; i += 1) {
 				if (arr[i] instanceof Array) {
-					result.concat(helper.flatten(arr[i]));
+					result = result.concat(helper.array.flatten(arr[i]));
 				} else {
-					result.psuh(arr[i]);
+					result.push(arr[i]);
 				}
 			}
 
