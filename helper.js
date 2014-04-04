@@ -23,6 +23,10 @@ var helper = {
 		}
 	},
 
+	pad: function (str, max) {
+		return str.length < max ? helper.pad("0" + str, max) : str;
+	},
+
 	dataURItoBlob: function (dataURI) {
 		if (atob && Blob && ArrayBuffer && Uint8Array) {
 			// convert base64 to raw binary data held in a string
