@@ -23,6 +23,28 @@ var helper = {
 		}
 	},
 
+	object: {
+		multipleFlatJoin: function (objs) {
+			var result = {};
+
+			function doJoin(base, obj) {
+				helper.objectEach(obj, function (key, value) {
+					if (base.hasOwnProperty(key) && value !== base[key]) {
+						throw new Error("attribute already set!");
+					} else {
+						result[key] = value;
+					}
+				});
+			}
+
+			objs.map(function (e) {
+				doJoin(result, e);
+			});
+
+			return result;
+		}
+	},
+
 	pad: function (str, max) {
 		return str.length < max ? helper.pad("0" + str, max) : str;
 	},
@@ -119,7 +141,7 @@ var helper = {
 			default:
 				obj.failure = true;
 				break;
-		}			
+		}
 	},
 
 	stringifyCertainAttributes: function (obj, attributes) {
