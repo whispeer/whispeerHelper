@@ -46,6 +46,7 @@ var helper = {
 	},
 
 	pad: function (str, max) {
+		str = str.toString();
 		return str.length < max ? helper.pad("0" + str, max) : str;
 	},
 
