@@ -50,6 +50,10 @@ var helper = {
 		return str.length < max ? helper.pad("0" + str, max) : str;
 	},
 
+	blobToDataURI: function (blob) {
+		return "data:" + blob.type + ";base64," + blob.toString("base64");
+	},
+
 	dataURItoBlob: function (dataURI) {
 		if (atob && Blob && ArrayBuffer && Uint8Array) {
 			// convert base64 to raw binary data held in a string
