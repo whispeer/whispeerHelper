@@ -347,11 +347,11 @@ var helper = {
 		return result;
 	},
 
-	objectEach: function (obj, cb) {
+	objectEach: function (obj, cb, thisArg) {
 		var attr;
 		for (attr in obj) {
 			if (obj.hasOwnProperty(attr)) {
-				cb(attr, obj[attr]);
+				cb.call(thisArg, attr, obj[attr]);
 			}
 		}
 	},
