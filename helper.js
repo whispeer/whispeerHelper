@@ -5,6 +5,10 @@ var helper = {
 	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
 	log: true,
 
+	capitaliseFirstLetter: function (string) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	},
+
 	array: {
 		contains: function (arr, element) {
 			return arr.indexOf(element) > -1;
