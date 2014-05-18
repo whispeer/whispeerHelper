@@ -2,9 +2,6 @@
 
 /** contains general helper functions */
 var helper = {
-	/** to disable logging (console.log) which is necessary because logger.js depends on helper */
-	log: true,
-
 	capitaliseFirstLetter: function (string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	},
@@ -717,9 +714,7 @@ var helper = {
 	sF: function (cb) {
 		var mysf = function sfFunction(err) {
 			if (err) {
-				if (helper.log) {
-					console.log(err.stack);
-				}
+				console.log(err.stack);
 				this(err);
 				return;
 			}
