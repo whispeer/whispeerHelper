@@ -742,7 +742,7 @@ var helper = {
 	*/
 	hE: function (cb, errors) {
 		function throwCertainError(err, type) {
-			if (!err instanceof type) {
+			if (err instanceof type) {
 				return true;
 			}
 		}
@@ -751,24 +751,23 @@ var helper = {
 			if (err) {
 				console.log(err);
 
+				var passToNext = false;
+
 				if (errors instanceof Array) {
-					var doThrow = true;
+					var doThrow = false;
 					var i;
 					for (i = 0; i < errors.length; i += 1) {
-						if (throwCertainError(err, errors[i])) {
-							doThrow = false;
+						if (err instanceof errors[i]) {
+							passToNext = true;
 						}
 					}
-
-					if (doThrow) {
-						this(err);
-						return;
-					}
 				} else {
-					if (throwCertainError(err, errors)) {
-						this(err);
-						return;
-					}
+					passToNext = err instanceof errors;
+				}
+
+				if (!passToNext) {
+					this(err);
+					return;
 				}
 			}
 
