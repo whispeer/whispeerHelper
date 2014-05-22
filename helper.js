@@ -57,21 +57,25 @@ var helper = {
 
 	dataURItoBlob: function (dataURI) {
 		if (atob && Blob && ArrayBuffer && Uint8Array) {
-			// convert base64 to raw binary data held in a string
-			// doesn't handle URLEncoded DataURIs
-			var byteString = atob(dataURI.split(",")[1]);
+			try {
+				// convert base64 to raw binary data held in a string
+				// doesn't handle URLEncoded DataURIs
+				var byteString = atob(dataURI.split(",")[1]);
 
-			// separate out the mime component
-			var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+				// separate out the mime component
+				var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
 
-			// write the bytes of the string to an ArrayBuffer
-			var ab = new ArrayBuffer(byteString.length);
-			var ia = new Uint8Array(ab);
-			for (var i = 0; i < byteString.length; i++) {
-				ia[i] = byteString.charCodeAt(i);
+				// write the bytes of the string to an ArrayBuffer
+				var ab = new ArrayBuffer(byteString.length);
+				var ia = new Uint8Array(ab);
+				for (var i = 0; i < byteString.length; i++) {
+					ia[i] = byteString.charCodeAt(i);
+				}
+
+				return new Blob([ab], { type: mimeString });
+			} catch (e) {
+				return false;
 			}
-
-			return new Blob([ab], { type: mimeString });
 		} else {
 			return false;
 		}
@@ -279,7 +283,15 @@ var helper = {
 		return result;
 	},
 
-	extend: function (target, extender, depth) {
+	extend: function (target, extender, depth, removeEmpty) {
+		function shouldDeleteAttribute(value) {
+			if (!removeEmpty) {
+				return false;
+			}
+
+			return value === "" || value === null || (typeof value === "object" && Object.keys(value).length === 0);
+		}
+
 		if (!target) {
 			return extender;
 		}
@@ -291,14 +303,20 @@ var helper = {
 		var attr, given, added;
 		// Extend the base object
 		for (attr in extender) {
+			target[attr] = target[attr] || {};
+
 			given = target[attr];
 			added = extender[attr];
 
 			if (added !== undefined) {
 				if (typeof given === "object" && typeof added === "object" && !(added instanceof Array)) {
-					helper.extend(given, added, depth-1);
+					helper.extend(given, added, depth-1, removeEmpty);
 				} else {
 					target[attr] = added;
+				}
+
+				if (shouldDeleteAttribute(target[attr])) {
+					delete target[attr];
 				}
 			}
 		}
