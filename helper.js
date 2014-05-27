@@ -500,22 +500,22 @@ var helper = {
 		}
 	},
 
-	deepSetCreate: function (obj, key, value) {
-		var i, cur = obj;
-		for (i = 0; i < key.length - 1; i += 1) {
-			if (!cur[key[i]]) {
-				cur[key[i]] = {};
+	deepSetCreate: function (obj, keys, value) {
+		var changed = false, cur = obj;
+		keys.forEach(function (key, index) {
+			if (index < keys.length) {
+				if (!cur[key]) {
+					cur[key] = {};
+				}
+
+				cur = cur[key];
+			} else if (cur[key !== value]) {
+				cur[key] = value;
+				changed = true;
 			}
+		});
 
-			cur = cur[key[i]];
-		}
-
-		if (cur[key[key.length - 1]] !== value) {
-			cur[key[key.length - 1]] = value;
-			return true;
-		}
-
-		return false;
+		return changed;
 	},
 
 	validateObjects: function validateObjectsF(reference, data, noValueCheck) {
