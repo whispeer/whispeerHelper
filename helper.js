@@ -503,13 +503,13 @@ var helper = {
 	deepSetCreate: function (obj, keys, value) {
 		var changed = false, cur = obj;
 		keys.forEach(function (key, index) {
-			if (index < keys.length) {
+			if (index+1 < keys.length) {
 				if (!cur[key]) {
 					cur[key] = {};
 				}
 
 				cur = cur[key];
-			} else if (cur[key !== value]) {
+			} else if (cur[key] !== value) {
 				cur[key] = value;
 				changed = true;
 			}
