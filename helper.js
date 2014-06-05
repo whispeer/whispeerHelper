@@ -25,6 +25,61 @@ var helper = {
 	},
 
 	object: {
+		deepSet: function (obj, partials, value) {
+			obj = obj || {};
+			if (partials.length === 0) {
+				return value;
+			}
+
+			var curPartial = obj;
+			partials.forEach(function (part, index) {
+				if (index === partials.length - 1) {
+					curPartial[part] = value;
+				}
+
+				if (!curPartial[part]) {
+					curPartial[part] = {};
+				}
+			});
+
+			return obj;
+		},
+		deepHas: function (obj, partials) {
+			var hasDeep = true, currentPartial = obj;
+			partials.forEach(function (partial) {
+				if (currentPartial.hasOwnProperty(partial)) {
+					currentPartial = currentPartial[partial];
+				} else {
+					hasDeep = false;
+				}
+			});
+
+			return hasDeep;
+		},
+		deepGet: function (obj, partials) {
+			var currentPart = obj, depth = 0, previousPart;
+
+			if (partials.length === 0) {
+				return {
+					depth: 0,
+					value: obj
+				};
+			}
+
+			partials.forEach(function (partial) {
+				if (typeof currentPart[partial] !== "undefined") {
+					previousPart = currentPart;
+					currentPart = currentPart[partial];
+					depth+=1;
+				}
+			});
+
+			return {
+				depth: depth,
+				value: currentPart,
+				parentValue: previousPart
+			};
+		},
 		multipleFlatJoin: function (objs) {
 			var result = {};
 
