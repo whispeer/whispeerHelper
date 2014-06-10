@@ -6,6 +6,18 @@ var helper = {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	},
 
+	objectifyResult: function (name, cb) {
+		return function (e, result) {
+			var data = {};
+			if (e) {
+				cb(e);
+			} else {
+				data[name] = result;
+				cb(null, data);
+			}
+		};
+	},
+
 	array: {
 		contains: function (arr, element) {
 			return arr.indexOf(element) > -1;
