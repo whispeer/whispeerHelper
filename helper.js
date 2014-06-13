@@ -148,6 +148,28 @@ var helper = {
 		}
 	},
 
+	aggregateOnce: function (delayTime, callFunction) {
+		var timerStarted = false;
+
+		function doLoad() {
+			timerStarted = false;
+
+			callFunction(function (err) {
+				if (err) {
+					throw err;
+				}
+			});
+		}
+
+		return function (cb) {
+			if (!timerStarted) {
+				timerStarted = true;
+
+				window.setTimeout(doLoad, delayTime);
+			}
+		};
+	},
+
 	delayMultiple: function (delayTime, loadFunction) {
 		var timerStarted = false;
 		var idsToLoad = [];
