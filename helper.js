@@ -1,5 +1,7 @@
 "use strict";
 
+var global = this;
+
 /** contains general helper functions */
 var helper = {
 	capitaliseFirstLetter: function (string) {
@@ -123,7 +125,7 @@ var helper = {
 	},
 
 	dataURItoBlob: function (dataURI) {
-		if (atob && Blob && ArrayBuffer && Uint8Array) {
+		if (global.atob && global.Blob && global.ArrayBuffer && global.Uint8Array) {
 			try {
 				// convert base64 to raw binary data held in a string
 				// doesn't handle URLEncoded DataURIs
