@@ -4,6 +4,12 @@ var global = this;
 
 /** contains general helper functions */
 var helper = {
+	not: function (func) {
+		return function () {
+			return !func.apply(this, arguments);
+		};
+	},
+
 	capitaliseFirstLetter: function (string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	},
@@ -21,6 +27,15 @@ var helper = {
 	},
 
 	array: {
+		spreadByArray: function (toSpread, attributeNames) {
+			var res = {};
+
+			toSpread.forEach(function (val, index) {
+				res[attributeNames[index]] = val;
+			});
+
+			return res;
+		},
 		contains: function (arr, element) {
 			return arr.indexOf(element) > -1;
 		},
