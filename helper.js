@@ -750,7 +750,8 @@ var helper = {
 
 	/** is data an e-mail? */
 	isMail: function (data) {
-		return (helper.isString(data) && data.length !== 0 && !!data.match(/^[A-Z0-9._%\-]+@[A-Z0-9.\-]+\.[A-Z]+$/i));
+		var regex = /^.+@.+$/;
+		return (helper.isString(data) && data.length !== 0 && regex.test(data));
 	},
 
 	/** is data a session Key (hex value with certain length) */
