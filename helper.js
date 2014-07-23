@@ -771,6 +771,10 @@ var helper = {
 		return false;
 	},
 
+	isSignature: function (data) {
+		return helper.isHex(data);
+	},
+
 	isHex: function (data) {
 		return (helper.isset(data) && typeof data === "string" && !!data.match(/^[A-Fa-f0-9]*$/));
 	},
