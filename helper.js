@@ -872,6 +872,10 @@ var helper = {
 		return (helper.isset(data) && typeof data === "string" && !!data.match(/^[A-Za-z0-9\+\/=]|=[^=]|={3,}$/));
 	},
 
+	isSignature: function (data) {
+		return helper.isHex(data);
+	},
+
 	isHex: function (data) {
 		return (helper.isset(data) && typeof data === "string" && !!data.match(/^[A-Fa-f0-9]*$/));
 	},
