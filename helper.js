@@ -4,6 +4,9 @@ var global = this;
 
 /** contains general helper functions */
 var helper = {
+	and: function (v1, v2) {
+		return v1 && v2;
+	},
 	not: function (func) {
 		return function () {
 			return !func.apply(this, arguments);
