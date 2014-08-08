@@ -729,6 +729,10 @@ var helper = {
 	},
 
 	isRealID: function (data) {
+		if (typeof data !== "string") {
+			return false;
+		}
+
 		var parts = data.split(":");
 
 		if (parts.length !== 2) {
