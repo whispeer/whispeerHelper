@@ -193,11 +193,60 @@ var helper = {
 			});
 		}
 
-		return function (cb) {
+		return function () {
 			if (!timerStarted) {
 				timerStarted = true;
 
 				window.setTimeout(doLoad, delayTime);
+			}
+		};
+	},
+
+	FullFiller: function () {
+		var running = false, waiters = [];
+		var success = false, failure = false, error;
+
+		this.finish = function (e) {
+			failure = !!e;
+			success = !e;
+			error = e;
+
+			helper.callEach(waiters, [error]);			
+		};
+
+		this.success = function () {
+			if (!success && !failure) {
+				success = true;
+
+				helper.callEach(waiters);
+			}
+		};
+
+		this.fail = function (e) {
+			if (!success && !failure) {
+				failure = true;
+				error = e;
+
+				helper.callEach(waiters, [error]);
+			}
+		};
+
+		this.isSuccess = function () {
+			return success;
+		};
+
+		this.start = function (cb) {
+			if (!running && !success && !failure) {
+				running = true;
+				cb();
+			}
+		};
+
+		this.await = function (cb) {
+			if (success || failure) {
+				cb(error);
+			} else {
+				waiters.push(cb);
 			}
 		};
 	},
@@ -534,12 +583,11 @@ var helper = {
 			returnFunction = function () {};
 		}
 
-		var result, currentResult;
+		var result;
 
-		var i;
-		for (i = 0; i < listener.length; i += 1) {
+		listener.forEach(function (theListener) {
 			try {
-				currentResult = listener[i].apply(null, args);
+				var currentResult = theListener.apply(null, args);
 				if (result) {
 					result = returnFunction(result, currentResult);
 				} else {
@@ -548,7 +596,7 @@ var helper = {
 			} catch (e) {
 				console.log(e);
 			}
-		}
+		});
 
 		return result;
 	},
