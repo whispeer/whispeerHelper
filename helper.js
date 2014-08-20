@@ -482,6 +482,16 @@ var helper = {
 		return target;
 	},
 
+	extendNoOverwrite: function (target, extender) {
+		helper.objectEach(extender, function (key, value) {
+			if (typeof target[key] === "undefined") {
+				target[key] = helper.deepCopyObj(value);
+			} else if (typeof target[key] === "object") {
+				helper.extendNoOverwrite(target[key], value);
+			}
+		});
+	},
+
 	parseDecimal: function (e) {
 		return parseInt(e, 10);
 	},
