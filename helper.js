@@ -667,7 +667,7 @@ var helper = {
 
 				cur = cur[key];
 			} else if (cur[key] !== value) {
-				cur[key] = value;
+				cur[key] = helper.deepCopyObj(value);
 				changed = true;
 			}
 		});
