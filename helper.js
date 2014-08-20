@@ -138,8 +138,12 @@ var helper = {
 		return str.length < max ? helper.pad("0" + str, max) : str;
 	},
 
-	blobToDataURI: function (blob) {
-		return "data:" + blob.type + ";base64," + blob.toString("base64");
+	blobToDataURI: function (blob, cb) {
+		var reader = new FileReader();
+		reader.onload = function() {
+			cb(null, reader.result);
+		};
+		reader.readAsDataURL(blob);
 	},
 
 	dataURItoBlob: function (dataURI) {
