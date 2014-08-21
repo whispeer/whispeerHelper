@@ -13,6 +13,32 @@ var helper = {
 		};
 	},
 
+	joinArraysToObject: function (config) {
+		var result = [];
+		var len = config[Object.keys(config)[0]].length;
+
+		if (len === 0) {
+			return result;
+		}
+
+		var i;
+		for (i = 0; i < len; i += 1) {
+			result.push({});
+		}
+
+		helper.objectEach(config, function (key, arrVal) {
+			if (arrVal.length !== len) {
+				throw new Error("arrays need to have the same length");
+			}
+
+			arrVal.forEach(function (val, index) {
+				result[index][key] = val;
+			});
+		});
+
+		return result;
+	},
+
 	capitaliseFirstLetter: function (string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	},
