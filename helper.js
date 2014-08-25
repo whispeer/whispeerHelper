@@ -164,6 +164,12 @@ var helper = {
 		return str.length < max ? helper.pad("0" + str, max) : str;
 	},
 
+	canvasToBlob: function (canvas, cb) {
+		canvas.toBlob(function (blob) {
+			cb(null, blob);
+		});
+	},
+
 	blobToDataURI: function (blob, cb) {
 		var reader = new FileReader();
 		reader.onload = function() {
