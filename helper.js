@@ -13,6 +13,24 @@ var helper = {
 		};
 	},
 
+	concatBuffers: function () {
+		var bufs = Array.prototype.slice.call(arguments);
+
+		var len = 0, offset = 0;
+		bufs.forEach(function (buf) {
+			len += buf.byteLength;
+		});
+
+		var tmp = new Uint8Array(len);
+
+		bufs.forEach(function (buf) {
+			tmp.set(new Uint8Array(buf), offset);
+			offset += buf.byteLength;
+		});
+
+		return tmp.buffer;
+	},
+
 	joinArraysToObject: function (config) {
 		var result = [];
 		var len = config[Object.keys(config)[0]].length;
