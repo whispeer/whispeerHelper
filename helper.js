@@ -789,15 +789,6 @@ var helper = {
 
 		return results;
 	},
-	/** decode an EncryptedSignedMessage */
-	decodeESM: function (esm) {
-		var result = {};
-		result.m = helper.base64ToHex(esm.m);
-		result.s = helper.base64ToHex(esm.s);
-		result.iv = helper.base64ToHex(esm.iv);
-
-		return result;
-	},
 
 	/** is data an integer?
 	* @param data value to check for int value
@@ -870,10 +861,6 @@ var helper = {
 		}
 		//TODO!
 		return false;
-	},
-
-	isSignature: function (data) {
-		return helper.isHex(data);
 	},
 
 	isBase64: function (data) {
