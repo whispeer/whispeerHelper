@@ -876,6 +876,10 @@ var helper = {
 		return helper.isHex(data);
 	},
 
+	isBase64: function (data) {
+		return (helper.isset(data) && typeof data === "string" && !!data.match(/^[A-Za-z0-9\+\/=]|=[^=]|={3,}$/));
+	},
+
 	isHex: function (data) {
 		return (helper.isset(data) && typeof data === "string" && !!data.match(/^[A-Fa-f0-9]*$/));
 	},
