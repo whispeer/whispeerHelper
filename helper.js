@@ -861,7 +861,7 @@ var helper = {
 	},
 
 	isPassword: function (data) {
-		return (helper.isHex(data) && data.length === 10);
+		return (helper.isHex(data) && data.length === 64);
 	},
 
 	isCurve: function (data) {
