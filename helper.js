@@ -287,15 +287,14 @@ var helper = {
 		};
 	},
 
-	delayMultiple: function (delayTime, loadFunction) {
+
+	delayMultiple: function (delayTime, loadFunction, maxOnce) {
 		var timerStarted = false;
 		var idsToLoad = [];
 		var loadListeners = {};
 
 		function doLoad() {
-			var identifier = idsToLoad;
-			idsToLoad = [];
-			timerStarted = false;
+			var identifier = idsToLoad.splice(0, maxOnce || idsToLoad.length);
 
 			loadFunction(identifier, function (err, results) {
 				if (err) {
@@ -309,6 +308,12 @@ var helper = {
 
 					helper.callListener(curListener, results[i]);
 					delete loadListeners[curIdentifier];
+				}
+
+				if (idsToLoad.length === 0) {
+					timerStarted = false;
+				} else {
+					window.setTimeout(doLoad, delayTime);
 				}
 			});
 		}
