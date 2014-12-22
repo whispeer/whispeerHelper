@@ -1005,6 +1005,10 @@ var helper = {
 		};
 	},
 
+	emptyUnion: function (arr1, arr2) {
+		return helper.arraySubtract(arr1, arr2).length === 0 && helper.arraySubtract(arr2, arr1).length === 0;
+	},
+
 	/** is needle in haystack? */
 	inArray: function (haystack, needle) {
 		var i = 0;
