@@ -31,6 +31,17 @@ var helper = {
 		return tmp.buffer;
 	},
 
+	debounce: function (func, time) {
+		var timeout;
+		return function () {
+			if (timeout) {
+				clearTimeout(timeout);
+			}
+
+			timeout = setTimeout(func, time);
+		};
+	},
+
 	joinArraysToObject: function (config) {
 		var result = [];
 		var len = config[Object.keys(config)[0]].length;
