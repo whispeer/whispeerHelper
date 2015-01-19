@@ -737,6 +737,18 @@ var helper = {
 		}
 	},
 
+	toUrl: function(file) {
+		var url;
+
+		if (typeof URL !== "undefined") {
+			url = URL.createObjectURL(file);
+		} else if (typeof webkitURL !== "undefined") {
+			url = webkitURL.createObjectURL(file);
+		}
+
+		return url;
+	},
+
 	deepSetCreate: function (obj, keys, value) {
 		var changed = false, cur = obj;
 		keys.forEach(function (key, index) {
