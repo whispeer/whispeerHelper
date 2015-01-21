@@ -42,6 +42,22 @@ var helper = {
 		};
 	},
 
+	promisify: function (Promise, cb) {
+		return new Promise(function (resolve, reject) {
+			try {
+				cb(function (e, result) {
+					if (e) {
+						reject(e);
+					} else {
+						resolve(result);
+					}
+				});
+			} catch (e) {
+				reject(e);
+			}
+		});
+	},
+
 	joinArraysToObject: function (config) {
 		var result = [];
 		var len = config[Object.keys(config)[0]].length;
