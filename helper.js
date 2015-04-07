@@ -13,6 +13,13 @@ var helper = {
 		};
 	},
 
+	addAfterHook: function (func, hook, thisArg) {
+		return function () {
+			func.apply(thisArg, arguments);
+			hook.apply(thisArg, arguments);
+		};
+	},
+
 	concatBuffers: function () {
 		var bufs = Array.prototype.slice.call(arguments);
 
