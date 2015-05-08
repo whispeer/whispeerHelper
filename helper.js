@@ -4,6 +4,9 @@ var global = this;
 
 /** contains general helper functions */
 var helper = {
+	getLanguageFromPath: function () {
+		return window.top.location.pathname.split("/")[1];
+	},
 	and: function (v1, v2) {
 		return v1 && v2;
 	},
