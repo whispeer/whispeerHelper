@@ -111,6 +111,13 @@ var helper = {
 	},
 
 	array: {
+		find: function (arr, func) {
+			var results = arr.filter(func);
+
+			if (results.length === 1) {
+				return results[0];
+			}
+		},
 		spreadByArray: function (toSpread, attributeNames) {
 			var res = {};
 
