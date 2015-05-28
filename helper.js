@@ -18,6 +18,9 @@ var helper = {
 		// Return array of year and week number
 		return weekNo;
 	},
+	getLanguageFromPath: function () {
+		return window.top.location.pathname.split("/")[1];
+	},
 	and: function (v1, v2) {
 		return v1 && v2;
 	},
@@ -25,6 +28,58 @@ var helper = {
 		return function () {
 			return !func.apply(this, arguments);
 		};
+	},
+
+	addAfterHook: function (func, hook, thisArg) {
+		return function () {
+			func.apply(thisArg, arguments);
+			hook.apply(thisArg, arguments);
+		};
+	},
+
+	concatBuffers: function () {
+		var bufs = Array.prototype.slice.call(arguments);
+
+		var len = 0, offset = 0;
+		bufs.forEach(function (buf) {
+			len += buf.byteLength;
+		});
+
+		var tmp = new Uint8Array(len);
+
+		bufs.forEach(function (buf) {
+			tmp.set(new Uint8Array(buf), offset);
+			offset += buf.byteLength;
+		});
+
+		return tmp.buffer;
+	},
+
+	debounce: function (func, time) {
+		var timeout;
+		return function () {
+			if (timeout) {
+				clearTimeout(timeout);
+			}
+
+			timeout = setTimeout(func, time);
+		};
+	},
+
+	promisify: function (Promise, cb) {
+		return new Promise(function (resolve, reject) {
+			try {
+				cb(function (e, result) {
+					if (e) {
+						reject(e);
+					} else {
+						resolve(result);
+					}
+				});
+			} catch (e) {
+				reject(e);
+			}
+		});
 	},
 
 	joinArraysToObject: function (config) {
@@ -70,6 +125,13 @@ var helper = {
 	},
 
 	array: {
+		find: function (arr, func) {
+			var results = arr.filter(func);
+
+			if (results.length === 1) {
+				return results[0];
+			}
+		},
 		spreadByArray: function (toSpread, attributeNames) {
 			var res = {};
 
@@ -720,6 +782,18 @@ var helper = {
 		} else {
 			return false;
 		}
+	},
+
+	toUrl: function(file) {
+		var url;
+
+		if (typeof URL !== "undefined") {
+			url = URL.createObjectURL(file);
+		} else if (typeof webkitURL !== "undefined") {
+			url = webkitURL.createObjectURL(file);
+		}
+
+		return url;
 	},
 
 	deepSetCreate: function (obj, keys, value) {
