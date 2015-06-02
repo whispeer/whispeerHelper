@@ -4,6 +4,29 @@ var global = this;
 
 /** contains general helper functions */
 var helper = {
+	encodeParameters: function (parameters) {
+		var keys = Object.keys(parameters);
+
+		if (keys.length === 0) {
+			return "";
+		}
+
+		var result = "?";
+
+		keys.forEach(function (key) {
+			result += key;
+
+			if (parameters[key] !== null) {
+				result += "=" + parameters[key];
+			}
+
+			result += "&";
+		});
+
+		result = result.substr(0, result.length - 1);
+
+		return result;
+	},
 	getWeekNumber: function (d) {
 		// Copy date so don't modify original
 		d = new Date(+d);
