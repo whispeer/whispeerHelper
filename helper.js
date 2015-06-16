@@ -148,6 +148,9 @@ var helper = {
 	},
 
 	array: {
+		last: function (arr) {
+			return arr[arr.length - 1];
+		},
 		find: function (arr, func) {
 			var results = arr.filter(func);
 
