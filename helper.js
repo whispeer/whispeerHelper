@@ -4,6 +4,17 @@ var global = this;
 
 /** contains general helper functions */
 var helper = {
+	repeatUntilTrue: function (func) {
+		function repeatFunc() {
+			return func.then(function (res) {
+				if (!res) {
+					return repeatFunc();
+				}
+			});
+		}
+
+		return repeatFunc();
+	},
 	encodeParameters: function (parameters) {
 		var keys = Object.keys(parameters);
 
