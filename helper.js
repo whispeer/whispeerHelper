@@ -317,7 +317,23 @@ var helper = {
 					ia[i] = byteString.charCodeAt(i);
 				}
 
-				return new Blob([ab], { type: mimeString });
+				try{
+					return new Blob([ab], { type: mimeString });
+				}
+				catch(e){
+					// TypeError old chrome and FF
+					window.BlobBuilder = window.BlobBuilder ||
+										 window.WebKitBlobBuilder ||
+										 window.MozBlobBuilder ||
+										 window.MSBlobBuilder;
+					if (e.name === "TypeError" && window.BlobBuilder){
+						var bb = new window.BlobBuilder();
+						bb.append([ab]);
+						return bb.getBlob(mimeString);
+					}
+					
+					return false;
+				}
 			} catch (e) {
 				return false;
 			}
