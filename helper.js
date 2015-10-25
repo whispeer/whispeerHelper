@@ -13,11 +13,13 @@ var helper = {
 		});
 		return uuid;
 	},
-	repeatUntilTrue: function (func) {
+	repeatUntilTrue: function (Promise, func, delay) {
 		function repeatFunc() {
-			return func.then(function (res) {
+			return func().then(function (res) {
 				if (!res) {
-					return repeatFunc();
+					return Promise.delay(delay).then(function () {
+						return repeatFunc();
+					});
 				}
 			});
 		}
