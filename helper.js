@@ -2,6 +2,10 @@
 
 var global = this;
 
+var uuidPattern = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
+var uuidRegexPattern = uuidPattern.replace(/x/g, "[a-fA-F0-9]").replace(/y/g, "[89abAB]");
+var uuidRegex = new RegExp(uuidRegexPattern);
+
 /** contains general helper functions */
 var helper = {
 	createErrorType: function (name) {
@@ -20,7 +24,7 @@ var helper = {
 	},
 	generateUUID: function() {
 		var d = new Date().getTime();
-		var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+		var uuid = uuidPattern.replace(/[xy]/g, function(c) {
 			var r = (d + Math.random()*16)%16 | 0;
 			d = Math.floor(d/16);
 			return (c === "x" ? r : (r&0x3|0x8)).toString(16);
@@ -959,6 +963,10 @@ var helper = {
 		}
 
 		return results;
+	},
+
+	isUUID: function (uuid) {
+		return helper.isString(uuid) && uuid.match(uuidRegex);
 	},
 
 	/** is data an integer?
