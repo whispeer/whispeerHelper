@@ -4,6 +4,20 @@ var global = this;
 
 /** contains general helper functions */
 var helper = {
+	createErrorType: function (name) {
+		function CustomError(message) {
+		  var error = Error.call(this, message);
+
+		  this.name = name;
+		  this.message = error.message;
+		  this.stack = error.stack;
+		}
+
+		CustomError.prototype = Object.create(Error.prototype);
+		CustomError.prototype.constructor = CustomError;
+
+		return CustomError;
+	},
 	generateUUID: function() {
 		var d = new Date().getTime();
 		var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
