@@ -22,6 +22,9 @@ var helper = {
 
 		return CustomError;
 	},
+	randomIntFromInterval: function(min,max) {
+	    return Math.floor(Math.random()*(max-min+1)+min);
+	},
 	generateUUID: function() {
 		var d = new Date().getTime();
 		var uuid = uuidPattern.replace(/[xy]/g, function(c) {
