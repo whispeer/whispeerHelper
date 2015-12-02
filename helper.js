@@ -87,6 +87,9 @@ var helper = {
 	getLanguageFromPath: function () {
 		return window.top.location.pathname.split("/")[1];
 	},
+	or: function (v1, v2) {
+		return v1 || v2;
+	},
 	and: function (v1, v2) {
 		return v1 && v2;
 	},
