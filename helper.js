@@ -125,13 +125,17 @@ var helper = {
 	},
 
 	debounce: function (func, time) {
-		var timeout;
+		var timeout, args;
 		return function () {
+			args = arguments;
+
 			if (timeout) {
 				clearTimeout(timeout);
 			}
 
-			timeout = setTimeout(func, time);
+			timeout = setTimeout(function () {
+				func.apply(null, args);
+			}, time);
 		};
 	},
 
