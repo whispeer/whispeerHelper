@@ -316,10 +316,10 @@ var helper = {
 		return str.length < max ? helper.pad("0" + str, max) : str;
 	},
 
-	canvasToBlob: function (canvas, cb) {
+	canvasToBlob: function (canvas, type, cb) {
 		canvas.toBlob(function (blob) {
 			cb(null, blob);
-		});
+		}, type);
 	},
 
 	blobToDataURI: function (blob, cb) {
