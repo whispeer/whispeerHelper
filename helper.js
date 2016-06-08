@@ -1140,7 +1140,7 @@ var helper = {
 				args.push(arguments[i]);
 			}
 
-			cb.apply(this, args);
+			return cb.apply(this, args);
 		};
 
 		mysf.getRealFunction = function () {
@@ -1185,7 +1185,7 @@ var helper = {
 				}
 			}
 
-			cb.apply(this, arguments);
+			return cb.apply(this, arguments);
 		};
 	},
 
