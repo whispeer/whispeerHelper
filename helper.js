@@ -198,6 +198,9 @@ var helper = {
 	},
 
 	array: {
+		isArray: function (arr) {
+			return Object.prototype.toString.call(arr) === "[object Array]";
+		},
 		last: function (arr) {
 			return arr[arr.length - 1];
 		},
