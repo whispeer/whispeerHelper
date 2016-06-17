@@ -823,11 +823,11 @@ var helper = {
 		return result;
 	},
 
-	objectMap: function (obj, func) {
+	objectMap: function (obj, func, thisArg) {
 		var attr, res = {};
 		for (attr in obj) {
 			if (obj.hasOwnProperty(attr)) {
-				res[attr] = func(obj[attr]);
+				res[attr] = func.call(thisArg, obj[attr]);
 			}
 		}
 		return res;
