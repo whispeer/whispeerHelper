@@ -824,10 +824,14 @@ var helper = {
 	},
 
 	objectMap: function (obj, func, thisArg) {
-		var attr, res = {};
+		var attr, res = {}, result;
 		for (attr in obj) {
 			if (obj.hasOwnProperty(attr)) {
-				res[attr] = func.call(thisArg, obj[attr]);
+				result = func.call(thisArg, obj[attr], attr);
+
+				if (result) {
+					res[attr] = result;
+				}
 			}
 		}
 		return res;
