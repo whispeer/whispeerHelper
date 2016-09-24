@@ -124,6 +124,27 @@ var helper = {
 		return tmp.buffer;
 	},
 
+	debouncePromise: function (Bluebird, func, time) {
+		var timer = null;
+		return function() {
+			var args = arguments;
+
+			if(timer) {
+				clearTimeout(timer);
+			}
+
+			var promise = new Bluebird(function(resolve) {
+				timer = setTimeout(function() {
+					resolve();
+				}, time);
+			}).then(function() {
+				return func.apply(null, args);
+			});
+
+			return promise;
+		};
+	},
+
 	debounce: function (func, time) {
 		var timeout, args;
 		return function () {
