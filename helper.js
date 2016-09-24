@@ -479,6 +479,56 @@ var helper = {
 		};
 	},
 
+	delayMultiplePromise: function (Bluebird, delayTime, loadFunction, maxOnce) {
+		var idsToLoad = [];
+		var loadPromises = {}, loaderPromise;
+
+		function doLoad() {
+			var identifiers = idsToLoad.splice(0, maxOnce || idsToLoad.length);
+
+			return loadFunction(identifiers).then(function (results) {
+				loaderPromise = null;
+				return results;
+			}).map(function (result, i) {
+				return {
+					id: identifiers[i],
+					result: result
+				};
+			});
+		}
+
+		function getLoaderPromise() {
+			if (!loaderPromise) {
+				loaderPromise = Bluebird.delay(delayTime).then(function () {
+					return doLoad();
+				});
+			}
+
+			return loaderPromise;
+		}
+
+		function awaitNextLoad(identifier) {
+			return getLoaderPromise().filter(function (res) {
+				return res.id === identifier;
+			}).then(function (remainingResults) {
+				if (remainingResults.length === 0) {
+					return awaitNextLoad(identifier);
+				}
+
+				return remainingResults[0].result;
+			});
+		}
+
+		return function (identifier) {
+			if (!loadPromises[identifier]) {
+				idsToLoad.push(identifier);
+
+				loadPromises[identifier] = awaitNextLoad(identifier);
+			}
+
+			return loadPromises[identifier];
+		};
+	},
 
 	delayMultiple: function (delayTime, loadFunction, maxOnce) {
 		var timerStarted = false;
