@@ -1,6 +1,6 @@
 "use strict";
 
-var global = this;
+var global = window || this;
 
 var uuidPattern = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
 var uuidRegexPattern = uuidPattern.replace(/x/g, "[a-fA-F0-9]").replace(/y/g, "[89abAB]");
