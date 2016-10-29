@@ -222,6 +222,9 @@ var helper = {
 		isArray: function (arr) {
 			return Object.prototype.toString.call(arr) === "[object Array]";
 		},
+		first: function (arr) {
+			return arr[0];
+		},
 		last: function (arr) {
 			return arr[arr.length - 1];
 		},
