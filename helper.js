@@ -1,6 +1,16 @@
 "use strict";
 
-var global = window || this;
+function getGlobal() {
+	if (typeof window !== "undefined") {
+		return window;
+	}
+
+	if (typeof global !== "undefined") {
+		return global;
+	}
+}
+
+var glob = getGlobal();
 
 var uuidPattern = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
 var uuidRegexPattern = uuidPattern.replace(/x/g, "[a-fA-F0-9]").replace(/y/g, "[89abAB]");
@@ -358,7 +368,7 @@ var helper = {
 	},
 
 	dataURItoBlob: function (dataURI) {
-		if (global.atob && global.Blob && global.ArrayBuffer && global.Uint8Array) {
+		if (glob.atob && glob.Blob && glob.ArrayBuffer && glob.Uint8Array) {
 			try {
 				// convert base64 to raw binary data held in a string
 				// doesn't handle URLEncoded DataURIs
