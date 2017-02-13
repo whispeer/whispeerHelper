@@ -970,6 +970,10 @@ var helper = {
 	toUrl: function(file) {
 		var url;
 
+		if (file.localURL) {
+			return file.localURL;
+		}
+
 		if (typeof URL !== "undefined") {
 			url = URL.createObjectURL(file);
 		} else if (typeof webkitURL !== "undefined") {
