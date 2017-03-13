@@ -398,7 +398,7 @@ var helper = {
 						bb.append([ab]);
 						return bb.getBlob(mimeString);
 					}
-					
+
 					return false;
 				}
 			} catch (e) {
@@ -452,7 +452,7 @@ var helper = {
 			success = !e;
 			error = e;
 
-			helper.callEach(waiters, [error]);			
+			helper.callEach(waiters, [error]);
 		};
 
 		this.success = function () {
