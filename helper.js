@@ -1311,7 +1311,7 @@ if (typeof module !== "undefined" && module.hasOwnProperty("exports")) {
 }
 
 if (typeof define !== "undefined") {
-	define([], function () {
+	define(["toBlob"], function (toBlob) {
 		return helper;
 	});
 }
