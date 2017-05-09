@@ -1,12 +1,18 @@
 "use strict";
 
+declare var webkitURL: any
+declare var define: any
+
+interface Window { BlobBuilder, WebKitBlobBuilder, MozBlobBuilder, MSBlobBuilder }
+
 function getGlobal() {
 	if (typeof window !== "undefined") {
 		return window;
 	}
 
 	if (typeof global !== "undefined") {
-		return global;
+		// eslint-disable-next-line no-undef
+		return (global as any);
 	}
 }
 
@@ -18,6 +24,21 @@ var uuidRegex = new RegExp(uuidRegexPattern);
 
 /** contains general helper functions */
 var helper = {
+	executeOnce: (func: () => any) => {
+		let val
+		return () => {
+			if (!val) {
+				val = func()
+			}
+
+			return val
+		}
+	},
+	ensurePromise: function (p, cb) {
+		return (...args) => {
+			return p.resolve(cb(...args))
+		}
+	},
 	createErrorType: function (name) {
 		function CustomError(message) {
 		  var error = Error.call(this, message);
@@ -36,12 +57,14 @@ var helper = {
 	    return Math.floor(Math.random()*(max-min+1)+min);
 	},
 	generateUUID: function() {
+		/* eslint-disable no-bitwise */
 		var d = new Date().getTime();
 		var uuid = uuidPattern.replace(/[xy]/g, function(c) {
 			var r = (d + Math.random()*16)%16 | 0;
 			d = Math.floor(d/16);
 			return (c === "x" ? r : (r&0x3|0x8)).toString(16);
 		});
+		/* eslint-enable no-bitwise */
 		return uuid;
 	},
 	repeatUntilTrue: function (Promise, func, delay) {
@@ -88,7 +111,7 @@ var helper = {
 		// Make Sunday's day number 7
 		d.setDate(d.getDate() + 4 - (d.getDay()||7));
 		// Get first day of year
-		var yearStart = new Date(d.getFullYear(),0,1);
+		var yearStart = new Date(d.getFullYear(),0,1).getTime();
 		// Calculate full weeks to nearest Thursday
 		var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
 		// Return array of year and week number
@@ -668,8 +691,10 @@ var helper = {
 			}
 		}
 
-		for(name in hashMap) {
-			result.push(hashMap[name]);
+		for (name in hashMap) {
+			if (hashMap.hasOwnProperty(name)) {
+				result.push(hashMap[name]);
+			}
 		}
 
 		return result;
@@ -713,7 +738,7 @@ var helper = {
 		return result;
 	},
 
-	deepCopyObj: function (obj, depth) {
+	deepCopyObj: function (obj, depth?: number) {
 		if (typeof obj !== "object") {
 			return obj;
 		}
@@ -729,9 +754,11 @@ var helper = {
 		var attr, value, result = {};
 		// Extend the base object
 		for (attr in obj) {
-			value = obj[attr];
+			if (obj.hasOwnProperty(attr)) {
+				value = obj[attr];
 
-			result[attr] = helper.deepCopyObj(value, depth-1);
+				result[attr] = helper.deepCopyObj(value, depth-1);
+			}
 		}
 
 		return result;
@@ -757,20 +784,22 @@ var helper = {
 		var attr, given, added;
 		// Extend the base object
 		for (attr in extender) {
-			target[attr] = target[attr] || {};
+			if (extender.hasOwnProperty(attr)) {
+				target[attr] = target[attr] || {};
 
-			given = target[attr];
-			added = extender[attr];
+				given = target[attr];
+				added = extender[attr];
 
-			if (added !== undefined) {
-				if (typeof given === "object" && typeof added === "object" && !(added instanceof Array)) {
-					helper.extend(given, added, depth-1, removeEmpty);
-				} else {
-					target[attr] = added;
-				}
+				if (added !== undefined) {
+					if (typeof given === "object" && typeof added === "object" && !(added instanceof Array)) {
+						helper.extend(given, added, depth-1, removeEmpty);
+					} else {
+						target[attr] = added;
+					}
 
-				if (shouldDeleteAttribute(target[attr])) {
-					delete target[attr];
+					if (shouldDeleteAttribute(target[attr])) {
+						delete target[attr];
+					}
 				}
 			}
 		}
@@ -830,7 +859,7 @@ var helper = {
 		return result;
 	},
 
-	objectEach: function (obj, cb, thisArg) {
+	objectEach: function (obj, cb, thisArg?: any) {
 		var attr;
 		for (attr in obj) {
 			if (obj.hasOwnProperty(attr)) {
@@ -884,11 +913,7 @@ var helper = {
 		return arr;
 	},
 
-	callEach: function (listener, args, returnFunction) {
-		if (typeof returnFunction !== "function") {
-			returnFunction = function () {};
-		}
-
+	callEach: function (listener, args?, returnFunction = (r, c) => {}) {
 		var result;
 
 		listener.forEach(function (theListener) {
@@ -1001,7 +1026,7 @@ var helper = {
 		return changed;
 	},
 
-	validateObjects: function validateObjectsF(reference, data, noValueCheck) {
+	validateObjects: function validateObjectsF(reference, data, noValueCheck?) {
 		var key;
 		for (key in data) {
 			if (data.hasOwnProperty(key)) {
@@ -1221,7 +1246,7 @@ var helper = {
 	* passes on all other stuff to given function
 	*/
 	sF: function (cb) {
-		var mysf = function sfFunction(err) {
+		var mysf: any = function sfFunction(err) {
 			if (err) {
 				console.log(err.stack);
 				this(err);
@@ -1250,12 +1275,6 @@ var helper = {
 	* throws other errors.
 	*/
 	hE: function (cb, errors) {
-		function throwCertainError(err, type) {
-			if (err instanceof type) {
-				return true;
-			}
-		}
-
 		return function (err) {
 			if (err) {
 				console.log(err);
@@ -1263,7 +1282,6 @@ var helper = {
 				var passToNext = false;
 
 				if (errors instanceof Array) {
-					var doThrow = false;
 					var i;
 					for (i = 0; i < errors.length; i += 1) {
 						if (err instanceof errors[i]) {
