@@ -39,13 +39,20 @@ var helper = {
 			return p.resolve(cb(...args))
 		}
 	},
+	hasErrorId: function (response, id) {
+		var errorData = response.errorData
+		return Object.keys(errorData).some((key) => {
+			return errorData[key].id === id
+		})
+	},
 	createErrorType: function (name) {
-		function CustomError(message) {
-		  var error = Error.call(this, message);
+		function CustomError(message, extra) {
+			var error = Error.call(this, message);
 
-		  this.name = name;
-		  this.message = error.message;
-		  this.stack = error.stack;
+			this.name = name;
+			this.extra = extra;
+			this.message = error.message;
+			this.stack = error.stack;
 		}
 
 		CustomError.prototype = Object.create(Error.prototype);
@@ -326,7 +333,7 @@ var helper = {
 
 			return hasDeep;
 		},
-		deepGet: function (obj, partials) {
+		deepGet: function (obj, partials) : any {
 			var currentPart = obj, depth = 0, previousPart;
 
 			if (partials.length === 0) {
@@ -913,7 +920,7 @@ var helper = {
 		return arr;
 	},
 
-	callEach: function (listener, args?, returnFunction = (r, c) => {}) {
+	callEach: function (listener, args?, returnFunction: Function = () => {}) {
 		var result;
 
 		listener.forEach(function (theListener) {
