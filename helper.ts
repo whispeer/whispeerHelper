@@ -817,7 +817,7 @@ var helper = {
 		});
 	},
 
-	parseDecimal: function (e) {
+	parseDecimal: function (e) : number {
 		return parseInt(e, 10);
 	},
 
