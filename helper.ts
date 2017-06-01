@@ -2,6 +2,9 @@
 
 declare var webkitURL: any
 declare var define: any
+declare var global: any
+declare var process: any
+declare var module: any
 
 interface Window { BlobBuilder, WebKitBlobBuilder, MozBlobBuilder, MSBlobBuilder }
 

@@ -1,0 +1,7 @@
+.DS_STORE
+*.cmd
+*.log
+*complexity.txt
+*log.txt
+tmp/*
+node_modules/*

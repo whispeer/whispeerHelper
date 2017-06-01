@@ -14,5 +14,8 @@
     "type": "git",
     "url": ""
   },
-  "main": "helper"
+  "main": "helper",
+  "devDependencies": {
+    "typescript": "^2.3.4"
+  }
 }
