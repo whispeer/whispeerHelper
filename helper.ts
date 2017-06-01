@@ -246,6 +246,10 @@ var helper = {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	},
 
+	lowercaseFirstLetter: function (string: string) {
+		return string.charAt(0).toLowerCase() + string.slice(1);
+	},
+
 	objectifyResult: function (name, cb) {
 		return function (e, result) {
 			var data = {};
