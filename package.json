@@ -10,6 +10,9 @@
     "name": "Nils Kenneweg",
     "email": "nk@ovt.me"
   },
+  "scripts": {
+    "build": "tsc -d helper.ts"
+  },
   "repository": {
     "type": "git",
     "url": ""
