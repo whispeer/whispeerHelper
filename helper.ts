@@ -53,7 +53,7 @@ var helper = {
 		})
 	},
 	createErrorType: function (name) {
-		function CustomError(message, extra) {
+		function CustomError(message, extra?) {
 			var error = Error.call(this, message);
 
 			this.name = name;
@@ -66,6 +66,17 @@ var helper = {
 		CustomError.prototype.constructor = CustomError;
 
 		return CustomError;
+	},
+	cacheResult: function (func: () => any) {
+		let result
+
+		return function () {
+			if (!result) {
+				result = func.call(this)
+			}
+
+			return result
+		}
 	},
 	randomIntFromInterval: function(min,max) {
 	    return Math.floor(Math.random()*(max-min+1)+min);
