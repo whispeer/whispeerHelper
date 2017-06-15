@@ -7,7 +7,7 @@ declare var process: any
 declare var module: any
 
 interface MyWindow extends Window {
-    BlobBuilder, WebKitBlobBuilder, MozBlobBuilder, MSBlobBuilder
+	BlobBuilder, WebKitBlobBuilder, MozBlobBuilder, MSBlobBuilder
 }
 
 declare var window: MyWindow;
@@ -67,19 +67,34 @@ var helper = {
 
 		return CustomError;
 	},
-	cacheResult: function (func: () => any) {
+	cacheResult: function (func: Function) {
 		let result
 
-		return function () {
+		return function (...args) {
 			if (!result) {
-				result = func.call(this)
+				result = func.apply(this, args)
 			}
 
 			return result
 		}
 	},
+	cacheUntilSettled: function (func: Function) {
+		let resultPromise
+
+		return function (...args) {
+			if (!resultPromise) {
+				resultPromise = func.apply(this, args)
+			}
+
+			resultPromise.finally(() => {
+				resultPromise = null
+			})
+
+			return resultPromise
+		}
+	},
 	randomIntFromInterval: function(min,max) {
-	    return Math.floor(Math.random()*(max-min+1)+min);
+		return Math.floor(Math.random()*(max-min+1)+min);
 	},
 	generateUUID: function() {
 		/* eslint-disable no-bitwise */
