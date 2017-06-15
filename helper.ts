@@ -6,7 +6,11 @@ declare var global: any
 declare var process: any
 declare var module: any
 
-interface Window { BlobBuilder, WebKitBlobBuilder, MozBlobBuilder, MSBlobBuilder }
+interface MyWindow extends Window {
+    BlobBuilder, WebKitBlobBuilder, MozBlobBuilder, MSBlobBuilder
+}
+
+declare var window: MyWindow;
 
 function getGlobal() {
 	if (typeof window !== "undefined") {
@@ -580,7 +584,7 @@ var helper = {
 		};
 	},
 
-	delayMultiple: function (delayTime, loadFunction, maxOnce) {
+	delayMultiple: function (delayTime, loadFunction, maxOnce?) {
 		var timerStarted = false;
 		var idsToLoad = [];
 		var loadListeners = {};
@@ -1335,15 +1339,6 @@ var helper = {
 	firstCapital: function (string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
-};
-
-// Hook into commonJS module systems
-if (typeof module !== "undefined" && module.hasOwnProperty("exports")) {
-	module.exports = helper;
 }
 
-if (typeof define !== "undefined") {
-	define([], function () {
-		return helper;
-	});
-}
+export default helper
