@@ -67,8 +67,8 @@ var helper = {
 
 		return CustomError;
 	},
-	cacheResult: function (func: Function) {
-		let result
+	cacheResult: function<returnType> (func: Function) {
+		let result: returnType
 
 		return function (...args) {
 			if (!result) {
