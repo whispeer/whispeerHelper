@@ -50,6 +50,35 @@ var helper = {
         CustomError.prototype.constructor = CustomError;
         return CustomError;
     },
+    cacheResult: function (func) {
+        var result;
+        return function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            if (!result) {
+                result = func.apply(this, args);
+            }
+            return result;
+        };
+    },
+    cacheUntilSettled: function (func) {
+        var resultPromise;
+        return function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            if (!resultPromise) {
+                resultPromise = func.apply(this, args);
+            }
+            resultPromise["finally"](function () {
+                resultPromise = null;
+            });
+            return resultPromise;
+        };
+    },
     randomIntFromInterval: function (min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     },
@@ -1140,12 +1169,5 @@ var helper = {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 };
-// Hook into commonJS module systems
-if (typeof module !== "undefined" && module.hasOwnProperty("exports")) {
-    module.exports = helper;
-}
-if (typeof define !== "undefined") {
-    define([], function () {
-        return helper;
-    });
-}
+exports.__esModule = true;
+exports["default"] = helper;

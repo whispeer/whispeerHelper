@@ -1,25 +1,11 @@
-declare var webkitURL: any;
-declare var define: any;
-declare var global: any;
-declare var process: any;
-declare var module: any;
-interface Window {
-    BlobBuilder: any;
-    WebKitBlobBuilder: any;
-    MozBlobBuilder: any;
-    MSBlobBuilder: any;
-}
-declare function getGlobal(): any;
-declare var glob: any;
-declare var uuidPattern: string;
-declare var uuidRegexPattern: string;
-declare var uuidRegex: RegExp;
 /** contains general helper functions */
 declare var helper: {
     executeOnce: (func: () => any) => () => any;
     ensurePromise: (p: any, cb: any) => (...args: any[]) => any;
     hasErrorId: (response: any, id: any) => boolean;
-    createErrorType: (name: any) => (message: any, extra: any) => void;
+    createErrorType: (name: any) => (message: any, extra?: any) => void;
+    cacheResult: <returnType>(func: Function) => (...args: any[]) => returnType;
+    cacheUntilSettled: (func: Function) => (...args: any[]) => any;
     randomIntFromInterval: (min: any, max: any) => number;
     generateUUID: () => string;
     repeatUntilTrue: (Promise: any, func: any, delay: any) => any;
@@ -61,7 +47,7 @@ declare var helper: {
     aggregateOnce: (delayTime: any, callFunction: any) => () => void;
     FullFiller: () => void;
     delayMultiplePromise: (Bluebird: any, delayTime: any, loadFunction: any, maxOnce: any) => (identifier: any) => any;
-    delayMultiple: (delayTime: any, loadFunction: any, maxOnce: any) => (identifier: any, cb: any) => void;
+    delayMultiple: (delayTime: any, loadFunction: any, maxOnce?: any) => (identifier: any, cb: any) => void;
     setGeneralState: (state: any, obj: any) => void;
     stringifyCertainAttributes: (obj: any, attributes: any) => {};
     unStringifyCertainAttributes: (obj: any, attributes: any) => {};
@@ -120,3 +106,4 @@ declare var helper: {
     inArray: (haystack: any, needle: any) => boolean;
     firstCapital: (string: any) => any;
 };
+export default helper;
