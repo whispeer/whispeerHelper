@@ -974,7 +974,7 @@ var helper = {
 		return result;
 	},
 
-	objectMap: function (obj, func, thisArg) {
+	objectMap: function (obj, func, thisArg?) {
 		var attr, res = {}, result;
 		for (attr in obj) {
 			if (obj.hasOwnProperty(attr)) {
