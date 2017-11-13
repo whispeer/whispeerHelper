@@ -492,11 +492,7 @@ var helper = {
 		function doLoad() {
 			timerStarted = false;
 
-			callFunction(function (err) {
-				if (err) {
-					throw err;
-				}
-			});
+			callFunction()
 		}
 
 		return function () {
