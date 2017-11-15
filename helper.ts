@@ -300,7 +300,7 @@ var helper = {
 		first: function (arr) {
 			return arr[0];
 		},
-		last: function (arr) {
+		last: function <T>(arr: T[]): T {
 			return arr[arr.length - 1];
 		},
 		find: function (arr, func) {
