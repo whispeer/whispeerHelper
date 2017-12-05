@@ -564,33 +564,33 @@ var helper = {
 				loaderPromise = null;
 				return results;
 			}).map(function (result, i) {
+				const id = identifiers[i]
+				delete loadPromises[id]
+
 				return {
-					id: identifiers[i],
-					result: result
+					id,
+					result
 				};
 			});
 		}
 
 		function getLoaderPromise() {
 			if (!loaderPromise) {
-				loaderPromise = Bluebird.delay(delayTime).then(function () {
-					return doLoad();
-				});
+				loaderPromise = Bluebird.delay(delayTime)
+					.then(() => doLoad());
 			}
 
 			return loaderPromise;
 		}
 
 		function awaitNextLoad(identifier) {
-			return getLoaderPromise().filter(function (res) {
-				return res.id === identifier;
-			}).then(function (remainingResults) {
-				if (remainingResults.length === 0) {
-					return awaitNextLoad(identifier);
-				}
-
-				return remainingResults[0].result;
-			});
+			return getLoaderPromise()
+				.filter((res) => res.id === identifier)
+				.then((remainingResults) =>
+					remainingResults.length === 0 ?
+					awaitNextLoad(identifier) :
+					remainingResults[0].result
+				)
 		}
 
 		return function (identifier) {
