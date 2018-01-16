@@ -177,9 +177,7 @@ var helper = {
 		};
 	},
 
-	concatBuffers: function () {
-		var bufs = Array.prototype.slice.call(arguments);
-
+	concatBuffers: function (...bufs) {
 		var len = 0, offset = 0;
 		bufs.forEach(function (buf) {
 			len += buf.byteLength;
