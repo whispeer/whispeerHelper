@@ -73,7 +73,7 @@ var helper = {
             if (!resultPromise) {
                 resultPromise = func.apply(this, args);
             }
-            resultPromise["finally"](function () {
+            resultPromise.finally(function () {
                 resultPromise = null;
             });
             return resultPromise;
@@ -430,11 +430,7 @@ var helper = {
         var timerStarted = false;
         function doLoad() {
             timerStarted = false;
-            callFunction(function (err) {
-                if (err) {
-                    throw err;
-                }
-            });
+            callFunction();
         }
         return function () {
             if (!timerStarted) {
@@ -492,28 +488,28 @@ var helper = {
                 loaderPromise = null;
                 return results;
             }).map(function (result, i) {
+                var id = identifiers[i];
+                delete loadPromises[id];
                 return {
-                    id: identifiers[i],
+                    id: id,
                     result: result
                 };
             });
         }
         function getLoaderPromise() {
             if (!loaderPromise) {
-                loaderPromise = Bluebird.delay(delayTime).then(function () {
-                    return doLoad();
-                });
+                loaderPromise = Bluebird.delay(delayTime)
+                    .then(function () { return doLoad(); });
             }
             return loaderPromise;
         }
         function awaitNextLoad(identifier) {
-            return getLoaderPromise().filter(function (res) {
-                return res.id === identifier;
-            }).then(function (remainingResults) {
-                if (remainingResults.length === 0) {
-                    return awaitNextLoad(identifier);
-                }
-                return remainingResults[0].result;
+            return getLoaderPromise()
+                .filter(function (res) { return res.id === identifier; })
+                .then(function (remainingResults) {
+                return remainingResults.length === 0 ?
+                    awaitNextLoad(identifier) :
+                    remainingResults[0].result;
             });
         }
         return function (identifier) {
@@ -1169,5 +1165,5 @@ var helper = {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 };
-exports.__esModule = true;
-exports["default"] = helper;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = helper;
